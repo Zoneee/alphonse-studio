@@ -1,58 +1,67 @@
 # AGENTS.md 模板（基线）
 
 > 读者：AI agent。
-> 用途：本文件是基线模板。每接入一个新 repo 时，复制本文件为 `<repo-name>-agents.md`，按需覆盖或追加内容，然后在 repo 根目录建软链接 `AGENTS.md` 指向新文件。
+> 用途：基线。每接入一个新 repo，复制本文件为 `<repo-name>-agents.md`，按需覆盖或追加。
+> 体量目标：实际 AGENTS.md ≤200 行。
+> 跨仓库规则（知识分层、Skills 加载机制）：见 `alphonse-studio/docs/knowledge-layering.md`。
 
-## 使用方式
+## 定位
+Agent 优先。人类掌舵、Agent 执行。目标是可靠、可验证、小范围持续交付。
 
-1. 复制 `template-agents.md` → `<repo-name>-agents.md`。
-2. 审阅每个章节：保留适用的、删除不适用的、补充 repo 专属规则。
-3. 在消费方 repo 根目录执行：
-   - `ln -s /home/alphonse/projects/alphonse-studio/agents/agents-md/<repo-name>-agents.md AGENTS.md`
-4. 在 `docs/agents-md/README.md` 登记新条目。
+## 工作规则
+- 仓库文档优先于对话历史。
+- 小步、可逆、可测试。
+- 没有验证证据，不得标记完成。
+- 改代码同步改文档、测试与计划。
+- 反复失败时，先改善系统而非只改实现。
+- 中文撰写；命令、路径、接口名、代码标识符保留英文。
+- 输出先说目标和理由；下一步收敛在当前 task scope 内。
 
-## 元规则
+## 完成定义
+- 任务范围满足。
+- 必要检查通过；验证证据已记录。
+- 受影响文档与测试已同步更新。
+- 风险与后续事项已备注。
+- 输出符合「目标-理由-步骤」结构。
 
-- **先理解再动手**：读到任务后，先读相关代码、追踪真实流程，再选方案。
-- **复用优先**：标准库、已有依赖、已有模块先于新代码。
-- **最小变更**：保留既有架构与契约；只改必须改的层。
-- **根因修复**：修一处共用守卫，不在每个调用点贴补丁。
-- **小可运行检查**：非平凡改动留一条 `assert` 或最小测试。
+## 禁止行为
+- 大范围混合目的的 PR。
+- 未在文档中记录的隐性假设进入业务逻辑。
+- 未经验证的外部输入进入业务逻辑。
+- 沉默的架构漂移。
 
-## .scratch 组织
+## 测试分层与 CI
+- **UT**：mock-based 编排检测。PR 阶段跑（秒级）。
+- **IT**：真实基础设施验证。PR 阶段跑（分钟级）。如有 `Tiltfile`，依赖 tiltfile 提供的设施。
+- **E2E / 合约**：merge 到 main 后 + nightly。
+- 流水线顺序：unit → integration → e2e。前一层失败不进入下一层。
+- PR 合并门禁：UT + IT 全过。
 
-- 临时文件、调研笔记、失败尝试一律归到 `.scratch/`。
-- 按主题分子目录（如 `.scratch/auth-flow/`），不在根目录散落。
-- 任务结束、确认无价值后删除对应子目录。
+## 开发规范
+- 分支：`<type>/<short-desc>`，例如 `feat/user-auth`、`fix/null-crash`。
+- Commit：Conventional Commits 1.0.0。
+- Worktree：默认关；多分支并行（紧急修复、对比实验）时启用。
+- PR 模板：`.github/pull_request_template.md` 三段（Summary / Test plan / Risk）。
 
-## PR / Review / Story / Docs 约定
+## Skills 加载规则
+- 默认工作流（scoped change）：`wayfinder` → `grill-with-docs` → `to-spec` → `to-tickets` → `implement`（内含 `tdd` / `code-review`）。
+- 用户显式指定 skill 时优先采用；与默认选择冲突时显式列出所采用的 skills 与原因。
+- 输出计划或结论前，自检本次任务的 skills 覆盖是否足够。
 
-- **PR**：标题、描述、关联 story、测试证据、风险点。
-- **Review**：关注正确性、根因、契约、可测性；非平凡改动必须留测试。
-- **Story**：背景、目标、范围、非目标、验收条件。
-- **Docs**：与代码同 repo；架构或契约变更同步更新。
+## .scratch/<feature>/ 布局
 
-## 前端规范
+```
+.scratch/<feature>/
+  issues/        # ticket 文件
+  story          # 软链到上游 story 文档
+  spec.md        # 当前 feature 的 spec
+  pr/            # 占位，后续 write-pr skill
+  review/        # 评审
+    from-<reviewer>.md
+    from-<reviewer>-comment.md
+  show-me/       # 占位，后续 show-me skill
+```
 
-- 组件边界、状态归属、可访问性、性能预算。
-- 章节细节待 grill 填充。
-
-## 后端规范
-
-- 模块边界、错误处理、契约稳定、日志与可观测性。
-- 章节细节待 grill 填充。
-
-## 数据库规范
-
-- 迁移流程、索引策略、命名约定、回滚预案。
-- 章节细节待 grill 填充。
-
-## 单元测试规范
-
-- 一个行为点一条测试；红绿重构循环。
-- 章节细节待 grill 填充。
-
-## 集成测试规范
-
-- 边界与契约、测试夹具、可重置状态、CI 证据。
-- 章节细节待 grill 填充。
+## 跨仓库规则
+- 长期知识分层、Skills 加载机制：见 `alphonse-studio/docs/knowledge-layering.md`。
+- 当前 repo 的复用经验统一沉淀到 `<repo>/docs/`，不使用独立的 memories 层。
