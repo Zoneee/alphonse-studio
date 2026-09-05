@@ -1,6 +1,7 @@
 ## 工作流
 
-- **完整链**：`scoped change`（需求已可描述）走 `wayfinder` → `grill-with-docs` → `to-spec` → `to-tickets` → `implement`（内含 `tdd` / `code-review`）。
+- turn by turn 使用中文。
+- **完整链**：`scoped change` 走 `wayfinder` → `grill-with-docs` → `to-spec` → `to-tickets` → `implement`（内含 `tdd` / `code-review`）。
 - **探索模式**：vague / 大任务只走 `wayfinder` → `grill-with-docs`，不出 spec / tickets。
 - **直接实施**：单文件 typo / config 调整，跳过 spec / tickets，直接 `implement`。
 - 跨阶段不确定用哪个 skill：跑 `ask-matt`。
@@ -26,7 +27,6 @@
 
 - 命名 / 错误处理 / 抽象层级 / 模块边界等约定由 repo 决定；写入 `<repo>-agents.md` 或 `CONTRIBUTING.md`。
 - 中文撰写；命令、路径、接口名、代码标识符保留英文。
-- Skill 输出的文档、对话内容使用中文（这条规则放 AGENTS.md，不放 skill 里，让 skill 保持语言无关、跨 repo 复用）。
 - 禁止嵌套类。
 - 禁止一个文件包含多个类。
 
