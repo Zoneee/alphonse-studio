@@ -14,6 +14,9 @@ Agent 优先。人类掌舵、Agent 执行。目标是可靠、可验证、小�
 - 没有验证证据，不得标记完成。
 - 改代码同步改文档、测试与计划。
 - 反复失败时，先改善系统而非只改实现。
+- 假设先在 `docs/` 显式记录再使用。
+- 外部输入在使用前完成验证（schema / 边界 / 类型）。
+- 架构变更前在 `docs/architecture/` 留痕或新建 ADR。
 - 中文撰写；命令、路径、接口名、代码标识符保留英文。
 - 输出先说目标和理由；下一步收敛在当前 task scope 内。
 
@@ -22,17 +25,16 @@ Agent 优先。人类掌舵、Agent 执行。目标是可靠、可验证、小�
 - 必要检查通过；验证证据已记录。
 - 受影响文档与测试已同步更新。
 - 风险与后续事项已备注。
-- 输出符合「目标-理由-步骤」结构。
 
 ## 禁止行为
 - 大范围混合目的的 PR。
+- 架构边界或依赖方向的变更未在 `docs/architecture/` 留痕。
 - 未在文档中记录的隐性假设进入业务逻辑。
 - 未经验证的外部输入进入业务逻辑。
-- 沉默的架构漂移。
 
 ## 测试分层与 CI
 - **UT**：mock-based 编排检测。PR 阶段跑（秒级）。
-- **IT**：真实基础设施验证。PR 阶段跑（分钟级）。如有 `Tiltfile`，依赖 tiltfile 提供的设施。
+- **IT**：真实基础设施验证。PR 阶段跑（分钟级）。若有 `Tiltfile`，依赖其提供的服务；无 `Tiltfile` 的 repo 在 `<repo>-agents.md` 写明替代基础设施。
 - **E2E / 合约**：merge 到 main 后 + nightly。
 - 流水线顺序：unit → integration → e2e。前一层失败不进入下一层。
 - PR 合并门禁：UT + IT 全过。
@@ -61,7 +63,3 @@ Agent 优先。人类掌舵、Agent 执行。目标是可靠、可验证、小�
     from-<reviewer>-comment.md
   show-me/       # 占位，后续 show-me skill
 ```
-
-## 跨仓库规则
-- 长期知识分层、Skills 加载机制：见 `alphonse-studio/docs/knowledge-layering.md`。
-- 当前 repo 的复用经验统一沉淀到 `<repo>/docs/`，不使用独立的 memories 层。
