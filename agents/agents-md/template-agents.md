@@ -22,10 +22,23 @@ Agent 优先。人类掌舵、Agent 执行。目标是可靠、可验证、小�
 - 输出先说目标和理由；下一步收敛在当前 task scope 内。
 
 ## 完成定义
-- 任务范围满足。
-- 必要检查通过；验证证据已记录。
-- 受影响文档与测试已同步更新。
-- 风险与后续事项已备注。
+
+ticket 完成 = agent 自检通过 + human 验收通过。两段各自独立负责。
+
+### Agent 自检（agent 工作流止点）
+- 所有 AC 已勾选（`- [ ]` → `- [x]`）。
+- 运行检查全过：UT + IT + lint + type-check + format + build。
+- 变更已同步：受影响的文档、测试、计划 commit 到 working tree。
+- ADR 触发已留痕：若命中 ADR 阈值，对应 `docs/adr/NNNN-<title>.md` 已 commit。
+- 证据已记录：每条 AC 的验证摘要 + 关键命令输出写到对应 ticket comment（带 ID）。
+- 风险已备注：自由文本（安全 / 性能 / 运维 / 兼容性 / 技术债），PR 模板 Risk 段 + ticket comment 末尾各写一份。
+- ticket Status 从 `ready-for-agent` → `ready-for-human`。
+- PR 已开。
+
+### Human 验收（PR merge 前提）
+- reviewer 走完 PR review。
+- 核对 agent 的 evidence + AC 勾选 + 风险备注一致。
+- 决定 merge（ticket 关闭）或 reject（Status 回 `ready-for-agent`）。
 
 ## 禁止行为
 - 大范围混合目的的 PR。
