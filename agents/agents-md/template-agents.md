@@ -78,9 +78,21 @@ ticket 完成 = agent 自检通过 + human 验收通过。两段各自独立负�
 - Risk：分类列举（安全 / 性能 / 运维 / 兼容性 / 技术债）；无风险写「无」。
 
 ## Skills 加载规则
-- 默认工作流（scoped change）：`wayfinder` → `grill-with-docs` → `to-spec` → `to-tickets` → `implement`（内含 `tdd` / `code-review`）。
-- 用户显式指定 skill 时优先采用；与默认选择冲突时显式列出所采用的 skills 与原因。
-- 输出计划或结论前，自检本次任务的 skills 覆盖是否足够。
+
+### 默认工作流
+- **完整链**：`scoped change`（需求已可描述）走 `wayfinder` → `grill-with-docs` → `to-spec` → `to-tickets` → `implement`（内含 `tdd` / `code-review`）。
+- **探索模式**：vague / 大任务只走 `wayfinder` → `grill-with-docs`，不出 spec / tickets。
+- **直接实施**：单文件 typo / config 调整，跳过 spec / tickets，直接 `implement`。
+- 跨阶段不确定用哪个 skill：跑 `ask-matt`。
+
+### 各链步产物路径
+- skill 自身规定路径 → 走 skill。
+- skill 未规定 → AGENTS.md 设默认路径：
+  - `wayfinder` → `.scratch/<feature>/map.md`
+  - `to-spec` → `.scratch/<feature>/spec.md`
+  - `to-tickets` → `.scratch/<feature>/issues/<NN>-<slug>.md`（per `to-tickets` skill 既有约定）
+  - `implement` → 代码 + 测试
+- `grill-with-docs`：产物落 `docs/`（按 `docs/` 子目录布局）。
 
 ## .scratch/<feature>/ 布局
 
