@@ -35,7 +35,7 @@ Default placement, by doc shape:
 - **Runbook** → `docs/runbooks/<scenario>.md`.
 - **Internal how-to / convention** → `docs/<area>/<topic>.md`.
 
-Above placement follows the unified rule: 按 `docs/knowledge-layering.md` 默认布局写入对应 slot；若当前 repo 的 `<repo>-agents.md` 覆盖了布局，则遵循覆盖。Follow the repo's existing placement convention if it differs from the slots above.
+Above placement follows the unified rule: use the default layout in docs/knowledge-layering.md; if the current repo's <repo>-agents.md overrides it, follow that override. Follow the repo's existing placement convention if it differs from the slots above.
 
 ## Body shapes
 

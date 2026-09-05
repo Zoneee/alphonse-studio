@@ -14,17 +14,21 @@ The Feature document sits above the Story and below the product strategy. It is 
 
 If the user can't articulate the affected user and the observable pain, stop and ask them to. Don't invent a problem statement.
 
-If a `CONTEXT.md` exists, follow its ubiquitous language. If `CONTEXT-MAP.md` exists and points to multiple CONTEXTs, follow the one that covers this area. Do not introduce new terms when an existing glossary word fits.
-
 ## Inputs
 
 - The problem or opportunity that triggered the Feature (customer signal, metric, strategy bet, or a user-quoted pain).
 - The user segments affected. Use existing personas if the repo has them; don't invent new ones.
 - Existing Features this one composes with, replaces, or extends.
 
+Domain terms come from the repo's context file(s):
+
+- **Single context** — if a `CONTEXT.md` exists at the repo root and no `CONTEXT-MAP.md`, use its glossary directly.
+- **Multi context** — if a `CONTEXT-MAP.md` exists at the repo root, follow its pointers into the relevant sub-`CONTEXT.md` and use that glossary. Do not blend vocabularies across contexts.
+- If neither exists, fall back to existing repo terms; surface any new term to the product / glossary owner before publishing.
+
 ## Output
 
-Write the Feature doc. 按 `docs/knowledge-layering.md` 默认布局写入 `docs/features/<id>-feature-<slug>/<id>-feature-<slug>.md`；若当前 repo 的 `<repo>-agents.md` 覆盖了布局，则遵循覆盖。`<id>` is a numeric ticket / feature id; `<slug>` is kebab-case. Create the parent directory if it does not exist.
+Write the Feature doc to `docs/features/<id>-feature-<slug>/<id>-feature-<slug>.md`. Use the default layout in docs/knowledge-layering.md; if the current repo's <repo>-agents.md overrides it, follow that override. `<id>` is a numeric ticket / feature id; `<slug>` is kebab-case. Create the parent directory if it does not exist.
 
 ## Body
 

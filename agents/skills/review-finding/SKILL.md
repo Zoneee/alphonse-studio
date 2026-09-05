@@ -8,7 +8,7 @@ Deep review that goes beyond "does the code follow standards". It cross-checks t
 
 ## When to use
 
-Use when reviewing an unmerged change before merge: a branch, PR, or work-in-progress that already has a Story and (preferably) a Feature pointing at it.
+Use when reviewing an unmerged change before merge: the change should already have a Story and (preferably) a Feature pointing at it.
 
 Don't use when there is no Story or Feature to check against — a code-only review is `code-review`, not this skill. Don't use for post-merge archaeology or for live debugging — that's `diagnosing-bugs`.
 
@@ -41,7 +41,7 @@ The `[severity]` and `[confidence]` tags are independent: severity says how badl
 
 ## Output
 
-Write the report to a Markdown file. 按 `docs/knowledge-layering.md` 默认布局写入 `.scratch/<story-id>/review/from-<reviewer>.md`；若当前 repo 的 `<repo>-agents.md` 覆盖了布局，则遵循覆盖。Replace `<reviewer>` with the agent or human producing the review.
+Write the report to a Markdown file at `.scratch/<story-id>/review/from-<reviewer>.md`. Use the default layout in docs/knowledge-layering.md; if the current repo's <repo>-agents.md overrides it, follow that override. Replace `<reviewer>` with the agent or human producing the review.
 
 ## Process
 

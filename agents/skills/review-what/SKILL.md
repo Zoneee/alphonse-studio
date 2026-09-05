@@ -36,7 +36,7 @@ Avoid vague verdicts. Every row carries an evidence-backed reason. "Looks fine" 
 
 ## Output
 
-Write the triage report to a Markdown file. 按 `docs/knowledge-layering.md` 默认布局写入 `.scratch/<story-id>/review/from-<reviewer>-comment.md`；若当前 repo 的 `<repo>-agents.md` 覆盖了布局，则遵循覆盖。`<reviewer>` matches the matching `review-finding` output's reviewer slug.
+Write the triage report to a Markdown file at `.scratch/<story-id>/review/from-<reviewer>-comment.md`. Use the default layout in docs/knowledge-layering.md; if the current repo's <repo>-agents.md overrides it, follow that override. `<reviewer>` matches the matching `review-finding` output's reviewer slug.
 
 ## Process
 

@@ -37,7 +37,7 @@ If an ADR exists for the area, respect it; if the Story needs to break an ADR, s
 
 ## Output
 
-Write the Story doc. 按 `docs/knowledge-layering.md` 默认布局写入 `docs/features/<id>-feature-<slug>/story/<id>-story-<slug>.md`；若当前 repo 的 `<repo>-agents.md` 覆盖了布局，则遵循覆盖。The parent Feature directory must already exist (run `write-feature` first if it doesn't). After writing, create or refresh the symlink `.scratch/<story-id>/story` → `docs/features/<id>-feature-<slug>/story/<id>-story-<slug>.md`.
+Write the Story doc to `docs/features/<id>-feature-<slug>/story/<id>-story-<slug>.md`. Use the default layout in docs/knowledge-layering.md; if the current repo's <repo>-agents.md overrides it, follow that override. The parent Feature directory must already exist (run `write-feature` first if it doesn't). After writing, create or refresh the symlink `.scratch/<story-id>/story` → `docs/features/<id>-feature-<slug>/story/<id>-story-<slug>.md`.
 
 ## Body
 
@@ -72,7 +72,6 @@ Write the Story doc. 按 `docs/knowledge-layering.md` 默认布局写入 `docs/f
 ## What not to do
 
 - Don't write implementation tasks or ticket bodies. Those come from `to-tickets`.
-- Don't write `user-story` voice here ("As a … I want …"); that lives in the Feature.
 - Don't write code beyond the small decision-snippets justified above.
 - Don't invent seams. If a new seam is needed, say so and explain why the existing one fails.
 - Don't relitigate Feature scope. If the Story needs to expand or shrink scope, surface that to the product side first.

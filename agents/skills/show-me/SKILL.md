@@ -36,7 +36,7 @@ The richer the input, the more concrete the output. If all you have is a problem
 
 ## Output
 
-Write to a single Markdown file. 按 `docs/knowledge-layering.md` 默认布局写入 `.scratch/<story-id>/show-me/<story-id>.md`；若当前 repo 的 `<repo>-agents.md` 覆盖了布局，则遵循覆盖。If `.scratch/<story-id>/` does not exist yet, create it under the current story slug. Structure:
+Write to a single Markdown file at `.scratch/<story-id>/show-me/<story-id>.md`. Use the default layout in docs/knowledge-layering.md; if the current repo's <repo>-agents.md overrides it, follow that override. If `.scratch/<story-id>/` does not exist yet, create it under the current story slug. Structure:
 
 ```markdown
 # <Story or task name>

@@ -34,7 +34,7 @@ Before opening the PR, verify all five. If any fails, stop and tell the user; do
 
 ## Output
 
-The final artifact is the PR on the host (e.g. GitHub). Before pushing, also stage a Markdown draft. 按 `docs/knowledge-layering.md` 默认布局写入 `.scratch/<story-id>/pr/draft.md`；若当前 repo 的 `<repo>-agents.md` 覆盖了布局，则遵循覆盖。so the body is reviewable in the working tree.
+The final artifact is the PR on the host (e.g. GitHub). Before pushing, also stage a Markdown draft at `.scratch/<story-id>/pr/draft.md` so the body is reviewable in the working tree. Use the default layout in docs/knowledge-layering.md; if the current repo's <repo>-agents.md overrides it, follow that override.
 
 ## Body shape
 
