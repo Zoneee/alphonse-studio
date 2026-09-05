@@ -1,9 +1,17 @@
 ---
 name: write-story
-description: "Write a Story document from the architecture perspective: how the system delivers the Feature, with AC, seams, and decisions. The Story is the contract between product and engineering. Use when turning a Feature into one or more engineering-readable units of work."
+description: "Write a Story document from the architecture perspective: how the system delivers the Feature, with AC, seams, and decisions. The Story is the contract between product and engineering."
+disable-model-invocation: true
 ---
 
 The Story document sits below the Feature and above the tickets. It is the architect's artifact: takes a slice of Feature value and describes how the system will deliver it — with enough precision that engineers can implement and test without re-asking, but without committing to code that will be outdated in a week.
+
+Two voice boundaries this skill enforces; do not blur them:
+
+- **Story** (capitalised) is the engineering-side contract this skill produces: architecture, seams, AC, decisions. It is read by implementers and reviewers.
+- **user-story** (lowercase, hyphenated) is the product-side voice used in Features and ticket seeds: "As a <user>, I want <capability>, so that <value>". It belongs in the Feature; it does **not** belong in this document.
+
+The two never substitute for each other: a `Story` AC must be testable from the outside (input → observable behaviour → outcome), and a `user-story` voice never carries the seam or decision detail that the engineering side needs.
 
 ## When to use
 
@@ -19,11 +27,17 @@ If the Feature doesn't exist, stop and ask the user to run `write-feature` first
 - Existing architecture: relevant ADRs, the module map, the seam conventions of this repo.
 - Tech constraints (platforms, languages, runtime versions, infra boundaries).
 
-If `CONTEXT.md` exists, use its glossary. If an ADR exists for the area, respect it; if the Story needs to break an ADR, surface that explicitly and link to the proposed new ADR.
+Domain terms come from the repo's context file(s):
+
+- **Single context** — if a `CONTEXT.md` exists at the repo root and no `CONTEXT-MAP.md`, use its glossary directly.
+- **Multi context** — if a `CONTEXT-MAP.md` exists at the repo root, follow its pointers into the relevant sub-`CONTEXT.md` and use that glossary. Do not blend vocabularies across contexts.
+- If neither exists, fall back to existing repo terms; surface any new term to the product / glossary owner before publishing.
+
+If an ADR exists for the area, respect it; if the Story needs to break an ADR, surface that explicitly and link to the proposed new ADR.
 
 ## Output
 
-Write the Story doc to `docs/features/<id>-feature-<slug>/story/<id>-story-<slug>.md` (per the shared `<repo>/docs/features/` layout in `alphonse-studio/docs/knowledge-layering.md`). The parent Feature directory must already exist (run `write-feature` first if it doesn't). After writing, create or refresh the symlink `.scratch/<story-id>/story` → `docs/features/<id>-feature-<slug>/story/<id>-story-<slug>.md`. If the repo's `<repo>-agents.md` overrides the layout, follow the override.
+Write the Story doc. 按 `docs/knowledge-layering.md` 默认布局写入 `docs/features/<id>-feature-<slug>/story/<id>-story-<slug>.md`；若当前 repo 的 `<repo>-agents.md` 覆盖了布局，则遵循覆盖。The parent Feature directory must already exist (run `write-feature` first if it doesn't). After writing, create or refresh the symlink `.scratch/<story-id>/story` → `docs/features/<id>-feature-<slug>/story/<id>-story-<slug>.md`.
 
 ## Body
 
@@ -58,7 +72,7 @@ Write the Story doc to `docs/features/<id>-feature-<slug>/story/<id>-story-<slug
 ## What not to do
 
 - Don't write implementation tasks or ticket bodies. Those come from `to-tickets`.
-- Don't write user stories in the "As a … I want …" voice — those live in the Feature.
+- Don't write `user-story` voice here ("As a … I want …"); that lives in the Feature.
 - Don't write code beyond the small decision-snippets justified above.
 - Don't invent seams. If a new seam is needed, say so and explain why the existing one fails.
 - Don't relitigate Feature scope. If the Story needs to expand or shrink scope, surface that to the product side first.

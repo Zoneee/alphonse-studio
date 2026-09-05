@@ -1,6 +1,7 @@
 ---
 name: write-feature
-description: "Write a Feature document from the product perspective: who needs it, why, what success looks like, what's out. The Feature answers 'why this exists' and 'what value unlocks when it's done'. Use when starting a new product capability or refreshing one whose purpose has drifted."
+description: "Write a Feature document from the product perspective: who needs it, why, what success looks like, what's out. The Feature answers 'why this exists' and 'what value unlocks when it's done'."
+disable-model-invocation: true
 ---
 
 The Feature document sits above the Story and below the product strategy. It is the product manager's artifact: framed in user value, scope, and success — not implementation.
@@ -11,7 +12,7 @@ The Feature document sits above the Story and below the product strategy. It is 
 - An existing capability has drifted and needs re-anchoring against its original purpose.
 - A cross-team initiative needs a shared product view before any Story is written.
 
-If the user can't articulate the problem in one paragraph, stop and ask them to. Don't invent a problem statement.
+If the user can't articulate the affected user and the observable pain, stop and ask them to. Don't invent a problem statement.
 
 If a `CONTEXT.md` exists, follow its ubiquitous language. If `CONTEXT-MAP.md` exists and points to multiple CONTEXTs, follow the one that covers this area. Do not introduce new terms when an existing glossary word fits.
 
@@ -23,7 +24,7 @@ If a `CONTEXT.md` exists, follow its ubiquitous language. If `CONTEXT-MAP.md` ex
 
 ## Output
 
-Write the Feature doc to `docs/features/<id>-feature-<slug>/<id>-feature-<slug>.md` (per the shared `<repo>/docs/features/` layout in `alphonse-studio/docs/knowledge-layering.md`). `<id>` is a numeric ticket / feature id; `<slug>` is kebab-case. Create the parent directory if it does not exist. If the repo's `<repo>-agents.md` overrides the layout, follow the override.
+Write the Feature doc. 按 `docs/knowledge-layering.md` 默认布局写入 `docs/features/<id>-feature-<slug>/<id>-feature-<slug>.md`；若当前 repo 的 `<repo>-agents.md` 覆盖了布局，则遵循覆盖。`<id>` is a numeric ticket / feature id; `<slug>` is kebab-case. Create the parent directory if it does not exist.
 
 ## Body
 
@@ -31,7 +32,7 @@ Write the Feature doc to `docs/features/<id>-feature-<slug>/<id>-feature-<slug>.
 # <Feature name>
 
 ## Problem
-<One paragraph. From the user's perspective, not the system's. What is broken, missing, or sub-optimal today?>
+<2–4 sentences, each verifiable and naming the affected user and the observable pain, written from the user's perspective.>
 
 ## Who
 <User segments affected, each with the job-to-be-done they are trying to do. Reference existing personas if the repo has them.>

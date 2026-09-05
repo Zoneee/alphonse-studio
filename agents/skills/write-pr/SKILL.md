@@ -1,18 +1,26 @@
 ---
 name: write-pr
-description: "Open a pull request after code is written and review-what is settled. Resolves repo, base, reviewers, and fills the PR body from the change, Story, and review findings. Use when the work is done and ready to merge — not before."
+description: "Open and ship a pull request after review-what is settled: push the branch, fill the body from the change + Story + review findings, post the PR comment, and stop before merge."
+disable-model-invocation: true
 ---
 
-Opens a PR once the implementation is finished, `review-what` has triaged findings, and all `fix-here` items are committed. Drafts and executes. Does not author code.
+Ships a PR once the implementation is finished, `review-what` has triaged findings, and all `fix-here` items are committed. Drafts and executes. Does not author code.
+
+## When to use
+
+Use after `review-what` has produced a verdict list and all `fix-here` items are committed on the implementation branch.
+
+Don't use before `review-what` has run — opening a PR against un-triaged findings invites drive-by comments that re-litigate the triage. Don't use to author code; that's `implement` / `tdd`.
 
 ## Pre-flight
 
-Before opening the PR, verify all four. If any fails, stop and tell the user; do not auto-fix.
+Before opening the PR, verify all five. If any fails, stop and tell the user; do not auto-fix.
 
 1. Working tree is clean (`git status --porcelain` is empty).
-2. Current branch is the implementation branch for the Story (matches the repo's branch convention).
-3. Base branch exists locally or on the remote. If only local, fetch first.
-4. `.github/pull_request_template.md` (or the repo's equivalent) exists. If not, fall back to the body shape below.
+2. **Branch convention read** — read the current repo's `AGENTS.md` (or `<repo>-agents.md` symlink target) for the branch naming convention. If the file does not exist, or exists but does not name a branch convention, stop and ask the user instead of guessing.
+3. Current branch is the implementation branch for the Story (matches the convention read in step 2).
+4. **Base branch fetch** — `git fetch origin <base>` succeeds and `git rev-parse origin/<base>` resolves to a commit. **Done when**: `git rev-parse origin/<base>` returns a commit SHA; if fetch fails or the remote ref is missing, stop and surface the failure, do not proceed to PR creation on an unresolved base.
+5. `.github/pull_request_template.md` (or the repo's equivalent) exists. If not, fall back to the body shape below.
 
 ## Inputs
 
@@ -26,7 +34,7 @@ Before opening the PR, verify all four. If any fails, stop and tell the user; do
 
 ## Output
 
-The final artifact is the PR on the host (e.g. GitHub). Before pushing, also stage a Markdown draft to `.scratch/<story-id>/pr/draft.md` (per the shared `.scratch/<story-id>/` layout in AGENTS.md) so the body is reviewable in the working tree. If the repo's `<repo>-agents.md` overrides the layout, follow the override.
+The final artifact is the PR on the host (e.g. GitHub). Before pushing, also stage a Markdown draft. 按 `docs/knowledge-layering.md` 默认布局写入 `.scratch/<story-id>/pr/draft.md`；若当前 repo 的 `<repo>-agents.md` 覆盖了布局，则遵循覆盖。so the body is reviewable in the working tree.
 
 ## Body shape
 
@@ -101,3 +109,4 @@ If `gh` is not authenticated, stop and tell the user to run `gh auth login`. Don
 - Don't open a PR before `review-what` has been run. A PR opened against un-triaged findings will gather drive-by comments that re-litigate the triage.
 - Don't include unrelated changes in the same PR. If `git status` shows stray edits, stop and ask.
 - Don't add reviewers the user hasn't approved. If CODEOWNERS resolves to a long list, list them all but flag it for the user.
+- Don't invent a branch naming convention when the repo's `AGENTS.md` is silent — stop and ask.

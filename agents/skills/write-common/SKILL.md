@@ -1,6 +1,7 @@
 ---
 name: write-common
-description: "Write developer-facing documents from the implementation perspective: how to use, run, debug, extend, or integrate the system. The Common layer is the engineer's reference that lives at the code, not the architecture. Use when an API, module, or workflow needs a doc that ages with the code, not above it."
+description: "Write developer-facing documents from the implementation perspective: how to use, run, debug, extend, or integrate the system. The Common layer is the engineer's reference that lives at the code, not the architecture."
+disable-model-invocation: true
 ---
 
 The Common document is the developer's reference. It sits beside the code: API references, integration guides, troubleshooting recipes, internal how-tos, runbooks. Where the Feature answers "why" and the Story answers "what", the Common answers "how".
@@ -20,17 +21,21 @@ If the doc is about a decision or trade-off, that belongs in an ADR via `domain-
 - The audience: external integrators, new contributors, on-call engineers, future-self.
 - Existing conventions: where do READMEs live? What format do API refs use? Is there a `docs/` index?
 
-If `CONTEXT.md` exists, use its glossary. If `CONTEXT-MAP.md` exists and points to multiple CONTEXTs, follow the one that covers this area.
+Domain terms come from the repo's context file(s):
+
+- **Single context** — if a `CONTEXT.md` exists at the repo root and no `CONTEXT-MAP.md`, use its glossary directly.
+- **Multi context** — if a `CONTEXT-MAP.md` exists at the repo root, follow its pointers into the relevant sub-`CONTEXT.md` and use that glossary. Do not blend vocabularies across contexts.
+- If neither exists, fall back to existing repo terms; surface any new term to the product / glossary owner before publishing.
 
 ## Output
 
 Default placement, by doc shape:
 
 - **API / module reference** → `<module>/README.md` if the module has a directory, else `docs/<area>/<module>.md`.
-- **Runbook** → `docs/runbooks/<scenario>.md` (matches the shared `<repo>/docs/runbooks/` slot in `alphonse-studio/docs/knowledge-layering.md`).
+- **Runbook** → `docs/runbooks/<scenario>.md`.
 - **Internal how-to / convention** → `docs/<area>/<topic>.md`.
 
-Follow the repo's existing placement convention if it differs. If the repo's `<repo>-agents.md` overrides the layout, follow the override.
+Above placement follows the unified rule: 按 `docs/knowledge-layering.md` 默认布局写入对应 slot；若当前 repo 的 `<repo>-agents.md` 覆盖了布局，则遵循覆盖。Follow the repo's existing placement convention if it differs from the slots above.
 
 ## Body shapes
 
@@ -101,8 +106,8 @@ Pick the shape that matches the audience. Don't force every doc into one templat
 
 ## What not to do
 
+- **Don't quote rotting references.** A **rotting reference** is anything that goes stale the moment the code moves: a specific internal module path that will be renamed, a UI screenshot that drifts when the layout changes, a line number that drifts with edits, or a behaviour pinned to a single library version. Reference module names, exported symbols, and stable behaviour contracts instead. When an example must show a screenshot or a version-bound recipe, place it in a doc that explicitly commits to staying current (release notes, migration guides) — not in the Common layer.
 - Don't duplicate the Story or Feature. Link to them; don't restate.
-- Don't write prose that ages out fast — line numbers, exact file paths to internal modules, screenshots of UI that will move. Reference symbols and module names instead.
 - Don't write tutorial-style "first we'll, then we'll" walkthroughs unless the audience is genuinely new. Walkthroughs rot faster than reference docs.
 - Don't document private internals. If it's not part of the module's contract, it doesn't belong in the Common layer.
 

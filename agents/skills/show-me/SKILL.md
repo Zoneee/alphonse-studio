@@ -1,9 +1,10 @@
 ---
 name: show-me
-description: "Pre-code preview that turns a Story / spec / review context into a clear plan: current state, problem, goal, reason, gap, and a how-to with pseudocode or UML. Solves 'I shipped code I can't vouch for'. Use before opening a fix branch or starting any non-trivial implementation."
+description: "Pre-code preview that turns a Story / spec / review context into a clear plan: current state, problem, goal, reason, gap, and a how-to with pseudocode or UML. Solves 'I shipped code I can't vouch for'."
+disable-model-invocation: true
 ---
 
-The last gate before code goes in. Produces a single artifact the implementer (human or agent) reads once, then writes from. Forces explicit answers to five questions that vibe-coding skips:
+Pre-code gate that forces explicit answers to five questions that vibe-coding skips:
 
 1. **Current state** — what exists today, in the relevant code area.
 2. **Problem** — what's wrong or missing, in concrete terms.
@@ -11,9 +12,15 @@ The last gate before code goes in. Produces a single artifact the implementer (h
 4. **Reason** — why this is worth doing now, and what happens if we don't.
 5. **Gap** — the delta between current state and goal, narrowed to what this PR fills.
 
-Then the **how**: pseudocode or UML enough to make the implementation direction unambiguous, plus the decision rationale (why this shape and not another).
+After the five answers, the **how** sketches pseudocode or UML enough to make the implementation direction unambiguous, plus the decision rationale (why this shape and not another).
 
-The skill exists because review-after-the-fact catches too late. The five-question gate catches before the wrong shape is cemented in code.
+The five-question gate exists because review-after-the-fact catches too late: by then the wrong shape is cemented in code.
+
+## When to use
+
+Use before starting any non-trivial implementation, when an input (Story, spec, review finding, or free-form problem statement) is concrete enough to plan against.
+
+Don't use for one-line fixes — trivial changes don't need a plan. Don't use to draft code: the show-me is the plan, the implementer writes the code.
 
 ## Inputs
 
@@ -29,10 +36,10 @@ The richer the input, the more concrete the output. If all you have is a problem
 
 ## Output
 
-Write to a single Markdown file. Default path: `.scratch/<story-id>/show-me/<story-id>.md` (per the shared `.scratch/<story-id>/` layout in AGENTS.md). If `.scratch/<story-id>/` does not exist yet, create it under the current story slug. If the repo's `<repo>-agents.md` overrides the layout, follow the override. Structure:
+Write to a single Markdown file. 按 `docs/knowledge-layering.md` 默认布局写入 `.scratch/<story-id>/show-me/<story-id>.md`；若当前 repo 的 `<repo>-agents.md` 覆盖了布局，则遵循覆盖。If `.scratch/<story-id>/` does not exist yet, create it under the current story slug. Structure:
 
 ```markdown
-# show-me — <Story or task name>
+# <Story or task name>
 
 ## Current state
 <What exists today. Cite file:line for the relevant modules / functions / types. If you don't know, write "unexplored" and stop — don't guess.>
@@ -95,4 +102,3 @@ After writing the file, print the path and the one-paragraph summary. The implem
 - Don't write code in the show-me. The show-me is the plan; the implementer writes the code.
 - Don't skip the "what was rejected" half of decisions. A decision without a rejected alternative is just a preference.
 - Don't include findings from review-finding without re-checking them. The review may be stale by the time the show-me is written.
-- Don't produce a show-me for a one-line fix. The gate is for non-trivial changes; trivial changes don't need a plan.

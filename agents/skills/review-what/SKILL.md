@@ -1,11 +1,18 @@
 ---
 name: review-what
-description: "Triage the output of review-finding. For each finding, decide fix-here / fix-next / skip (with reason) / needs-human. Justify each verdict with the violated AC, Feature line, or contradicting code line. Use after review-finding, before opening fix branches."
+description: "Triage the output of review-finding. For each finding, assigns one verdict (fix-here / fix-next / skip-* / needs-human), each backed by the violated AC, Feature line, or contradicting code line."
+disable-model-invocation: true
 ---
 
 Triages the ranked finding list from `review-finding` (or any review source). Goal: a defensible verdict per finding — what gets fixed in this PR, what gets deferred, what gets rejected, and why.
 
 The skill exists because raw review output mixes real defects with noise, and shipping every finding as a must-fix bloats the PR until nobody can review it. The agent's job here is to separate signal from load.
+
+## When to use
+
+Use after `review-finding` produces a ranked list, before opening any fix branch.
+
+Don't use to redo the review — if a finding's evidence is wrong, the right verdict is `skip-false-positive`, not a new investigation. Don't use before `review-finding` has run; triage without a finding list is just guessing.
 
 ## Inputs
 
@@ -19,7 +26,7 @@ The skill exists because raw review output mixes real defects with noise, and sh
 For each finding, exactly one of:
 
 - **fix-here** — fix in the current PR. Justify by citing the violated AC, the Feature line, or a safety boundary (security, data integrity, CI red).
-- **fix-next** — same defect, but out of current PR scope. Open a follow-up ticket seed; reference the AC or Feature line so the next PR inherits the context.
+- **fix-next** — same defect, but out of current PR scope. Seed a follow-up ticket in the `Ticket seeds` block of the output; reference the AC or Feature line so the next PR inherits the context.
 - **skip-false-positive** — the reviewer's causal path doesn't hold. Quote the contradicting `file:line` so the rejection is checkable.
 - **skip-out-of-scope** — the change was never meant to address this. Cite the Feature's out-of-scope guardrail or the Story's scope statement.
 - **skip-over-design** — the proposed fix adds complexity the Feature doesn't need. Show the YAGNI argument or cite an ADR that says the simpler shape is the right one.
@@ -29,13 +36,22 @@ Avoid vague verdicts. Every row carries an evidence-backed reason. "Looks fine" 
 
 ## Output
 
-Write the triage report to a Markdown file. Default path: `.scratch/<story-id>/review/from-<reviewer>-comment.md` (per the shared `.scratch/<story-id>/` layout in AGENTS.md). `<reviewer>` matches the matching `review-finding` output's reviewer slug. If the repo's `<repo>-agents.md` overrides the layout, follow the override.
+Write the triage report to a Markdown file. 按 `docs/knowledge-layering.md` 默认布局写入 `.scratch/<story-id>/review/from-<reviewer>-comment.md`；若当前 repo 的 `<repo>-agents.md` 覆盖了布局，则遵循覆盖。`<reviewer>` matches the matching `review-finding` output's reviewer slug.
 
 ## Process
 
 ### 1. Read the finding list end to end
 
 Before triaging row by row, read every finding. Some P2s collapse into one fix; some P1s dissolve under cross-evidence. Don't verdict in isolation.
+
+Before any per-finding verdict, run a pass that produces a merge / dissolution list:
+
+- **Merge candidates** — findings that share a root cause or sit in the same module and would be fixed by a single commit. Group them; one verdict covers the group.
+- **Dissolution candidates** — findings whose premise is invalidated by another finding or by code evidence in the repo. A P1 that is fully covered by a high-confidence P0 from the same review drops; cite the covering finding.
+
+The merge / dissolution list is a precondition for step 2, not a side product of it: verdicts must reference a stable reading of the whole list, not a row-by-row improvisation that misses bulk-handling opportunities.
+
+**Done when**: every finding has been classified into one of {merge candidate, dissolved, neither}, the merge groups and the dissolution pairs are written down, and that classification is referenced before the first verdict is assigned.
 
 ### 2. Walk the decision tree per finding
 
@@ -47,6 +63,8 @@ For each finding, in order:
 4. If the fix requires new design choices the spec doesn't make → `needs-human`. Phrase the question precisely.
 5. If the finding is real but the proposed fix adds an abstraction or parameter the spec doesn't ask for → `skip-over-design` and propose inlining or deferring.
 
+Apply the merge / dissolution list from step 1 before assigning a verdict to a row that was grouped or covered. Verdict vocabulary stays the same set as above; no new verdict words.
+
 ### 3. Cross-check scope
 
 After verdicts, walk the `fix-here` list once. If together they push the PR past its scope (more than ~30% size delta, or they pull in a new module or migration), promote the lowest-priority ones to `fix-next`. Scope discipline beats completeness in a single PR.
@@ -56,7 +74,7 @@ After verdicts, walk the `fix-here` list once. If together they push the PR past
 A list per finding:
 
 ```
-[verdict] [P?] file:line — short title
+[verdict] [P?][confidence] file:line — short title
   Reason: AC-id-or-Feature-line / contradicting file:line / scope note
   Action: commit-message seed, ticket seed, or one-sentence question for human
 ```
