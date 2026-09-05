@@ -21,6 +21,10 @@ If a `CONTEXT.md` exists, follow its ubiquitous language. If `CONTEXT-MAP.md` ex
 - The user segments affected. Use existing personas if the repo has them; don't invent new ones.
 - Existing Features this one composes with, replaces, or extends.
 
+## Output
+
+Write the Feature doc to `docs/features/<id>-feature-<slug>/<id>-feature-<slug>.md` (per the shared `<repo>/docs/features/` layout in `alphonse-studio/docs/knowledge-layering.md`). `<id>` is a numeric ticket / feature id; `<slug>` is kebab-case. Create the parent directory if it does not exist. If the repo's `<repo>-agents.md` overrides the layout, follow the override.
+
 ## Body
 
 ```markdown

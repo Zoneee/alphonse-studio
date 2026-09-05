@@ -22,6 +22,16 @@ If the doc is about a decision or trade-off, that belongs in an ADR via `domain-
 
 If `CONTEXT.md` exists, use its glossary. If `CONTEXT-MAP.md` exists and points to multiple CONTEXTs, follow the one that covers this area.
 
+## Output
+
+Default placement, by doc shape:
+
+- **API / module reference** → `<module>/README.md` if the module has a directory, else `docs/<area>/<module>.md`.
+- **Runbook** → `docs/runbooks/<scenario>.md` (matches the shared `<repo>/docs/runbooks/` slot in `alphonse-studio/docs/knowledge-layering.md`).
+- **Internal how-to / convention** → `docs/<area>/<topic>.md`.
+
+Follow the repo's existing placement convention if it differs. If the repo's `<repo>-agents.md` overrides the layout, follow the override.
+
 ## Body shapes
 
 Pick the shape that matches the audience. Don't force every doc into one template.

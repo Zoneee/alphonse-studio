@@ -29,7 +29,7 @@ The richer the input, the more concrete the output. If all you have is a problem
 
 ## Output
 
-Write to a single Markdown file. Default path: `.scratch/show-me-<story-id>.md` if `.scratch/` exists, else the working tree root (ask the user to confirm before writing to root). Structure:
+Write to a single Markdown file. Default path: `.scratch/<story-id>/show-me/<story-id>.md` (per the shared `.scratch/<story-id>/` layout in AGENTS.md). If `.scratch/<story-id>/` does not exist yet, create it under the current story slug. If the repo's `<repo>-agents.md` overrides the layout, follow the override. Structure:
 
 ```markdown
 # show-me — <Story or task name>

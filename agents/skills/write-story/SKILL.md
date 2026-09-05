@@ -21,6 +21,10 @@ If the Feature doesn't exist, stop and ask the user to run `write-feature` first
 
 If `CONTEXT.md` exists, use its glossary. If an ADR exists for the area, respect it; if the Story needs to break an ADR, surface that explicitly and link to the proposed new ADR.
 
+## Output
+
+Write the Story doc to `docs/features/<id>-feature-<slug>/story/<id>-story-<slug>.md` (per the shared `<repo>/docs/features/` layout in `alphonse-studio/docs/knowledge-layering.md`). The parent Feature directory must already exist (run `write-feature` first if it doesn't). After writing, create or refresh the symlink `.scratch/<story-id>/story` → `docs/features/<id>-feature-<slug>/story/<id>-story-<slug>.md`. If the repo's `<repo>-agents.md` overrides the layout, follow the override.
+
 ## Body
 
 ```markdown

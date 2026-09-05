@@ -16,7 +16,9 @@
 
 | repo | md 文件 | 绝对路径 | 模板偏离度 | 最后核对日期 |
 | --- | --- | --- | --- | --- |
-| _（暂无）_ | | | | |
+| alphonse-studio | `alphonse-studio-agents.md` | `/home/alphonse/projects/alphonse-studio/agents/agents-md/alphonse-studio-agents.md` | light | 2026-09-05 |
+
+`alphonse-studio` 是第一个 consumer —— 即它本身就是 AGENTS.md 模板与 Skills 的源仓库，但仍以 consumer 身份受模板约束；其 `<repo>-agents.md` 末尾的「本 repo 备注」段记录它与通用模板的偏差。
 
 ## 新增条目流程
 

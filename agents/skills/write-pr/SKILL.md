@@ -24,6 +24,10 @@ Before opening the PR, verify all four. If any fails, stop and tell the user; do
 - **Reviewer handles** — from CODEOWNERS if it exists, otherwise leave to the user.
 - **`review-what` output** — so unresolved `needs-human` items can be surfaced on the PR thread.
 
+## Output
+
+The final artifact is the PR on the host (e.g. GitHub). Before pushing, also stage a Markdown draft to `.scratch/<story-id>/pr/draft.md` (per the shared `.scratch/<story-id>/` layout in AGENTS.md) so the body is reviewable in the working tree. If the repo's `<repo>-agents.md` overrides the layout, follow the override.
+
 ## Body shape
 
 ### If a template exists

@@ -27,6 +27,10 @@ For each finding, exactly one of:
 
 Avoid vague verdicts. Every row carries an evidence-backed reason. "Looks fine" is not a verdict.
 
+## Output
+
+Write the triage report to a Markdown file. Default path: `.scratch/<story-id>/review/from-<reviewer>-comment.md` (per the shared `.scratch/<story-id>/` layout in AGENTS.md). `<reviewer>` matches the matching `review-finding` output's reviewer slug. If the repo's `<repo>-agents.md` overrides the layout, follow the override.
+
 ## Process
 
 ### 1. Read the finding list end to end

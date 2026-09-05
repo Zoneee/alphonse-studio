@@ -32,6 +32,10 @@ Confidence tag accompanies severity:
 - `medium` — strong evidence with one reasonable assumption.
 - `low` — plausible concern that needs validation; place under `Needs verification`, not in P0/P1/P2.
 
+## Output
+
+Write the report to a Markdown file. Default path: `.scratch/<story-id>/review/from-<reviewer>.md` (per the shared `.scratch/<story-id>/` layout in AGENTS.md). Replace `<reviewer>` with the agent or human producing the review. If the repo's `<repo>-agents.md` overrides the layout, follow the override.
+
 ## Process
 
 ### 1. Pin the diff and confirm sources

@@ -7,28 +7,46 @@
 | 层 | 路径 | 写入什么 |
 | --- | --- | --- |
 | 跨仓库共享规则 | `alphonse-studio/docs/` | 默认工作流、Skills 加载机制、知识分层、AGENTS.md 模板本身 |
-| 当前 repo 长期产物 | `<repo>/docs/` | 仓库专属的 Story、ADR、架构、运行手册、领域词汇、未验证前提 |
-| 当前 feature 工作产物 | `<repo>/.scratch/<feature>/` | 当前进行中的 issue、spec、PR 草稿、评审、demo |
+| 当前 repo 长期产物 | `<repo>/docs/` | 仓库专属的 Feature、Story、ADR、架构、运行手册、领域词汇、未验证前提 |
+| 当前 story 工作产物 | `<repo>/.scratch/<story-id>/` | 当前 story 的 issue、spec、PR 草稿、评审、demo |
 
-## `<repo>/docs/` 子目录布局（6 个固定）
+## `<repo>/docs/` 子目录布局（6 个固定 + 1 个 features 结构）
 
 ```
 docs/
-  README.md                  # 一页入口，链到各子目录
-  stories/<id>.md            # user story + workflow + AC + context + 带 ID 的 Comment
-  adr/NNNN-<title>.md        # 架构决策记录（四位序号 + kebab-case）
-  architecture/              # 当下系统描述（可重写）
+  README.md                                 # 一页入口，链到各子目录
+  features/<id>-feature-<slug>/             # 一个 feature 一个目录；命名 <id>-feature-<slug>，id 是数字
+    <id>-feature-<slug>.md                  # Feature 文档（产品视角：why / who / value / success / scope / out-of-scope）
+    story/<id>-story-<slug>.md              # 该 feature 下的 Story 文档（架构视角：AC / seams / decisions / risks）
+  adr/NNNN-<title>.md                       # 架构决策记录（四位序号 + kebab-case）
+  architecture/                             # 当下系统描述（可重写）
     overview.md
     components.md
     data-model.md
-  runbooks/<scenario>.md     # 运维手册（imperative + step-by-step）
-  domain/                    # 稳定事实
+  runbooks/<scenario>.md                    # 运维手册（imperative + step-by-step）
+  domain/                                   # 稳定事实
     glossary.md
     facts.md
-  assumptions/<id>.md        # 未验证前提（会过期；验证后迁到 domain/ 或删除）
+  assumptions/<id>.md                       # 未验证前提（会过期；验证后迁到 domain/ 或删除）
 ```
 
 子目录清单是受控产物。新增顶层 `docs/` 子目录必须先改本文件 + 对应 `<repo>-agents.md`。
+
+## `.scratch/<story-id>/` 布局
+
+```
+.scratch/<story-id>/
+  issues/                                   # ticket 文件
+  story                                     # 软链到 docs/features/<id>-feature-<slug>/story/<id>-story-<slug>.md
+  spec.md                                   # 当前 story 的 spec
+  pr/                                       # write-pr skill 的 PR body 草稿
+  review/                                   # review-finding / review-what 产出
+    from-<reviewer>.md
+    from-<reviewer>-comment.md
+  show-me/                                  # show-me skill 产出
+```
+
+`.scratch/` 是当前 story 进行中的产物；story 关闭后清理（不写进 docs/）。
 
 ## 写入规则
 
@@ -36,8 +54,9 @@ docs/
 - 决策影响 structure / 关键质量属性 / 难逆转：写 `<repo>/docs/adr/NNNN-<title>.md`（Nygard 五字段：Title / Context / Decision / Status / Consequences）。
 - 当前 repo 的可复用经验、踩坑教训、验证结论、仓库级操作习惯：写入 `<repo>/docs/` 对应子目录。
 - 未验证前提：写入 `<repo>/docs/assumptions/<id>.md`；验证通过后迁到 `domain/facts.md`，未通过则删除。
-- 当前 feature 进行中的产物（未稳定的）：留在 `<repo>/.scratch/<feature>/`，不回写 docs。
-- 当前 feature 的 story 软链：`<repo>/.scratch/<feature>/story` → `<repo>/docs/stories/<id>.md`。
+- Feature 文档：`<repo>/docs/features/<id>-feature-<slug>/<id>-feature-<slug>.md`。
+- Story 文档：`<repo>/docs/features/<id>-feature-<slug>/story/<id>-story-<slug>.md`。
+- 当前 story 进行中的产物（未稳定的）：留在 `<repo>/.scratch/<story-id>/`，不回写 docs。
 
 ## ADR 状态机
 
