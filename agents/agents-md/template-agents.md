@@ -54,10 +54,28 @@ ticket 完成 = agent 自检通过 + human 验收通过。两段各自独立负�
 - PR 合并门禁：UT + IT 全过。
 
 ## 开发规范
-- 分支：`<type>/<short-desc>`，例如 `feat/user-auth`、`fix/null-crash`。
-- Commit：Conventional Commits 1.0.0。
-- Worktree：默认关；多分支并行（紧急修复、对比实验）时启用。
-- PR 模板：`.github/pull_request_template.md` 三段（Summary / Test plan / Risk）。
+
+### 分支
+- 格式：`<type>/<story-id>-<short-desc>`，例如 `feat/AUTH-123-user-auth`、`fix/BUG-456-null-crash`。
+- type 限 Conventional Commits 11 类：feat / fix / docs / style / refactor / perf / test / build / ci / chore / revert。
+- 个人 / 实验分支用 `<user-name>/<short-desc>` 前缀（如 `tony/spike-foo`）。
+
+### Commit
+- 遵循 Conventional Commits 1.0.0。
+- scope 可选但鼓励（`feat(auth): ...`）。
+- footer 必填 `Refs #<issue>` 或 `Closes #<issue>`。
+
+### Worktree
+- 默认关；多分支并行（紧急修复、对比实验）时启用。
+- 位置：仓库同级 `../<repo>-<branch>`。
+- 分支合并 / 关闭后立即 `git worktree remove <path>`。
+
+### PR 模板
+- 路径：`.github/pull_request_template.md`（单一模板）。
+- 三段：Summary / Test plan / Risk。
+- Summary 开头标注 PR Type（feature / fix / chore），可不与分支 type 严格一致。
+- Test plan：测试命令 + 结果摘要；UI / 输出类改动附截图。
+- Risk：分类列举（安全 / 性能 / 运维 / 兼容性 / 技术债）；无风险写「无」。
 
 ## Skills 加载规则
 - 默认工作流（scoped change）：`wayfinder` → `grill-with-docs` → `to-spec` → `to-tickets` → `implement`（内含 `tdd` / `code-review`）。
